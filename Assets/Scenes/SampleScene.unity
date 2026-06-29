@@ -616,7 +616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &172015018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3130,7 +3130,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4829,7 +4829,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5176,7 +5176,7 @@ MonoBehaviour:
   player: {fileID: 1510674008}
   visionRange: 15
   visionAngle: 100
-  canChase: 0
+  canChase: 1
   chasing: 0
   waitTime: 2
 --- !u!195 &963930087
@@ -8277,8 +8277,8 @@ Transform:
   m_GameObject: {fileID: 1885581600}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 3.1789, y: 1.14, z: 9.3881}
-  m_LocalScale: {x: 1.971537, y: 1, z: 7.4651837}
+  m_LocalPosition: {x: 3.1789, y: 1.3968, z: 9.3881}
+  m_LocalScale: {x: 1.971537, y: 1.5135, z: 7.4651837}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 888429588}

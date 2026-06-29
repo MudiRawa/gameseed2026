@@ -150,5 +150,6 @@ public class TypingMinigame : MonoBehaviour
     public void Send()
     {
         Debug.Log("MESSAGE SENT");
+        this.gameObject.SetActive(false);
     }
 }
