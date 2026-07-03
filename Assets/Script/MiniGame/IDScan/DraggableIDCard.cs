@@ -12,6 +12,8 @@ public class DraggableIDCard : MonoBehaviour,
 
     private Vector2 startPos;
 
+    public bool isDragging = false;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -24,6 +26,7 @@ public class DraggableIDCard : MonoBehaviour,
     public void OnBeginDrag(PointerEventData eventData)
     {
         startPos = rectTransform.anchoredPosition;
+        isDragging = true;
 
         // PENTING
         canvasGroup.blocksRaycasts = false;
@@ -47,6 +50,8 @@ public class DraggableIDCard : MonoBehaviour,
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        isDragging = false;
+        
         canvasGroup.blocksRaycasts = true;
     }
 

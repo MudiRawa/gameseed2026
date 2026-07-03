@@ -1,58 +1,109 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using System.Collections;
 
-public class ScannerArea : MonoBehaviour, IDropHandler
+public class ScannerArea : MonoBehaviour
 {
+    [Header("References")]
     public IDScanMinigame manager;
+
+    [Header("Scanner Visual")]
+    public Image scanSprite;
+
+    public Sprite idleSprite;
+    public Sprite scanningSprite;
+    public Sprite successSprite;
+
+    [Header("Scan Settings")]
+    public float scanDuration = 2f;
 
     private bool isScanning = false;
 
-    public void OnDrop(PointerEventData eventData)
+    private RectTransform scannerRect;
+
+    private DraggableIDCard currentCard;
+
+    private void Start()
     {
-        if (isScanning)
+        scannerRect = GetComponent<RectTransform>();
+
+        scanSprite.sprite = idleSprite;
+    }
+
+    private void Update()
+    {
+        // kalau belum input code benar
+        if (!manager.codeCorrect)
             return;
 
+        // cari kartu
         DraggableIDCard card =
-            eventData.pointerDrag.GetComponent<DraggableIDCard>();
+            FindObjectOfType<DraggableIDCard>();
 
-        if (card != null)
+        if (card == null)
+            return;
+
+        // cek overlap
+        bool overlapping =
+            RectOverlaps(
+                scannerRect,
+                card.GetComponent<RectTransform>()
+            );
+
+        // mulai scan
+        if (overlapping && card.isDragging && !isScanning)
         {
-            if (manager.codeCorrect)
-            {
-                StartCoroutine(ScanRoutine(card));
-            }
-            else
-            {
-                Debug.Log("Code belum benar!");
-
-                card.ReturnCard();
-            }
+            StartCoroutine(ScanRoutine(card));
         }
+    }
+
+    bool RectOverlaps(RectTransform a, RectTransform b)
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(
+            a,
+            b.position
+        );
     }
 
     IEnumerator ScanRoutine(DraggableIDCard card)
     {
         isScanning = true;
 
-        Debug.Log("SCANNING...");
+        currentCard = card;
 
-        RectTransform rect =
-            card.GetComponent<RectTransform>();
+        Debug.Log("SCAN START");
 
-        rect.SetParent(transform);
+        scanSprite.sprite = scanningSprite;
 
-        rect.anchoredPosition = Vector2.zero;
+        float timer = 0f;
 
-        // disable drag saat scanning
-        card.enabled = false;
+        while (timer < scanDuration)
+        {
+            // kalau kartu keluar area
+            if (!RectOverlaps(
+                scannerRect,
+                card.GetComponent<RectTransform>()))
+            {
+                Debug.Log("SCAN FAILED");
 
-        // delay random 1-2 detik
-        yield return new WaitForSeconds(
-            Random.Range(1f, 2f)
-        );
+                scanSprite.sprite = idleSprite;
 
-        Debug.Log("SCAN BERHASIL");
+                isScanning = false;
+
+                yield break;
+            }
+
+            timer += Time.deltaTime;
+
+            yield return null;
+        }
+
+        // sukses
+        Debug.Log("SCAN SUCCESS");
+
+        scanSprite.sprite = successSprite;
+
+        yield return new WaitForSeconds(1f);
 
         manager.CompleteMinigame();
 

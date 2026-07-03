@@ -3,133 +3,107 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Collections;
-using System.Collections.Generic;
 
 public class TypingMinigame : MonoBehaviour
 {
     [Header("UI")]
-    public TMP_Text targetWordText;
-    public TMP_Text outputText;
+    public TMP_Text typingText;
 
     [Header("Send Button")]
     public Button sendButton;
     public CanvasGroup sendCanvasGroup;
 
     [Header("Settings")]
-    public string targetWord = "APEL";
+    [TextArea(3, 5)]
+    public string targetWord =
+        "I am holding the files in my hand.";
 
-    // mapping huruf
-    private Dictionary<char, char> letterMap =
-        new Dictionary<char, char>();
-
-    // index huruf saat ini
     private int currentIndex = 0;
 
-    // hasil output random
-    private string outputString = "";
+    private bool isFlashingRed = false;
 
     private void Start()
     {
-        // uppercase semua
-        targetWord = targetWord.ToUpper();
+        UpdateVisualText();
 
-        // tampilkan target word
-        targetWordText.text = targetWord;
-
-        // generate random mapping
-        GenerateLetterMap();
-
-        // kosongkan output
-        outputText.text = "";
-
-        // disable tombol send
         sendButton.interactable = false;
 
-        // opacity tombol send
         sendCanvasGroup.alpha = 0.5f;
     }
 
-    void GenerateLetterMap()
+    private void OnEnable()
     {
-        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Keyboard.current.onTextInput += HandleCharacterInput;
+    }
 
-        foreach (char c in targetWord)
+    private void OnDisable()
+    {
+        if (Keyboard.current != null)
         {
-            if (!letterMap.ContainsKey(c))
-            {
-                char randomChar =
-                    alphabet[Random.Range(0, alphabet.Length)];
-
-                letterMap.Add(c, randomChar);
-            }
+            Keyboard.current.onTextInput -= HandleCharacterInput;
         }
     }
 
-    private void Update()
+    void HandleCharacterInput(char typedChar)
     {
-        Keyboard kb = Keyboard.current;
-
-        if (kb == null)
-            return;
-
-        // cek semua huruf A-Z
-        for (char c = 'A'; c <= 'Z'; c++)
-        {
-            Key key = (Key)System.Enum.Parse(
-                typeof(Key),
-                c.ToString()
-            );
-
-            if (kb[key].wasPressedThisFrame)
-            {
-                HandleTyping(c);
-            }
-        }
-    }
-
-    void HandleTyping(char typedChar)
-    {
-        // kalau sudah selesai
         if (currentIndex >= targetWord.Length)
             return;
 
-        // huruf yang benar
         char correctChar = targetWord[currentIndex];
 
-        // kalau benar
+        // BENAR
         if (typedChar == correctChar)
         {
-            // ambil random mapped char
-            char mappedChar = letterMap[correctChar];
-
-            // tambahkan ke output
-            outputString += mappedChar;
-
-            // update text
-            outputText.text = outputString;
-
-            // lanjut index
             currentIndex++;
 
-            // cek selesai
+            UpdateVisualText();
+
             CheckCompletion();
         }
         else
         {
-            // salah -> flash merah
             StartCoroutine(FlashRed());
         }
     }
 
+    void UpdateVisualText()
+    {
+        string result = "";
+
+        for (int i = 0; i < targetWord.Length; i++)
+        {
+            char c = targetWord[i];
+
+            // SUDAH DIKETIK
+            if (i < currentIndex)
+            {
+                if (isFlashingRed)
+                {
+                    result +=
+                        $"<color=#FF4444>{c}</color>";
+                }
+                else
+                {
+                    result +=
+                        $"<color=#798F9B>{c}</color>";
+                }
+            }
+            else
+            {
+                // transparan
+                result +=
+                    $"<color=#00000085>{c}</color>";
+            }
+        }
+
+        typingText.text = result;
+    }
     void CheckCompletion()
     {
-        // kalau selesai
         if (currentIndex >= targetWord.Length)
         {
-            // enable send
             sendButton.interactable = true;
 
-            // opacity normal
             sendCanvasGroup.alpha = 1f;
 
             Debug.Log("Typing Complete!");
@@ -138,18 +112,27 @@ public class TypingMinigame : MonoBehaviour
 
     IEnumerator FlashRed()
     {
-        Color originalColor = outputText.color;
+        isFlashingRed = true;
 
-        outputText.color = Color.red;
+        UpdateVisualText();
 
         yield return new WaitForSeconds(0.15f);
 
-        outputText.color = originalColor;
+        isFlashingRed = false;
+
+        UpdateVisualText();
     }
 
     public void Send()
     {
         Debug.Log("MESSAGE SENT");
+        StartCoroutine(Selesai());
+    }
+
+    IEnumerator Selesai()
+    {
+        yield return new WaitForSeconds(1f);
         this.gameObject.SetActive(false);
+        SoundManager.Instance.PlaySFX(4);
     }
 }

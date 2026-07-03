@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SortingManager : MonoBehaviour
 {
@@ -20,7 +21,14 @@ public class SortingManager : MonoBehaviour
         if (currentCorrect >= totalCorrectNeeded)
         {
             Debug.Log("Minigame Selesai!");
-            this.gameObject.SetActive(false);
+            StartCoroutine(Selesai());
         }
+    }
+
+    IEnumerator Selesai()
+    {
+        yield return new WaitForSeconds(1f);
+        this.gameObject.SetActive(false);
+        SoundManager.Instance.PlaySFX(4);
     }
 }

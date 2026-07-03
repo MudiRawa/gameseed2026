@@ -36,13 +36,13 @@ public class PlayerMovement : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
-    public void OnJump(InputValue value)
-    {
-        if (value.isPressed && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
-    }
+    // public void OnJump(InputValue value)
+    // {
+    //     if (value.isPressed && isGrounded)
+    //     {
+    //         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+    //     }
+    // }
 
     void Move()
     {

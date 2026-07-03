@@ -13,6 +13,7 @@ public class DraggableFolder : MonoBehaviour,
     private Canvas canvas;
 
     private Vector2 startPosition;
+    private bool isPlaced = false;
 
     private void Awake()
     {
@@ -24,6 +25,8 @@ public class DraggableFolder : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (isPlaced) return;
+        
         startPosition = rectTransform.anchoredPosition;
 
         canvasGroup.blocksRaycasts = false;
@@ -31,6 +34,8 @@ public class DraggableFolder : MonoBehaviour,
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (isPlaced) return;
+        
         Vector2 position;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -45,11 +50,19 @@ public class DraggableFolder : MonoBehaviour,
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (isPlaced) return;
+        
         canvasGroup.blocksRaycasts = true;
     }
 
     public void ReturnToStart()
     {
         rectTransform.anchoredPosition = startPosition;
+    }
+
+    public void LockFolder()
+    {
+        isPlaced = true;
+        canvasGroup.interactable = false;
     }
 }

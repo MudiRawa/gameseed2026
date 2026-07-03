@@ -91,5 +91,6 @@ public class IDScanMinigame : MonoBehaviour
     {
         Debug.Log("TASK COMPLETE");
         this.gameObject.SetActive(false);
+        SoundManager.Instance.PlaySFX(4);
     }
 }

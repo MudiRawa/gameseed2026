@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 public class FolderSlot : MonoBehaviour, IDropHandler
 {
     public FolderColor acceptedColor;
+    private int folderCount = 0;
+    private float folderSpacing = 10f;
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -19,7 +21,11 @@ public class FolderSlot : MonoBehaviour, IDropHandler
                 RectTransform rect =
                     folder.GetComponent<RectTransform>();
 
-                rect.anchoredPosition = Vector2.zero;
+                float yPosition = -folderCount * -folderSpacing;
+                rect.anchoredPosition = new Vector2(0, (30 - yPosition));
+
+                folder.LockFolder();
+                folderCount++;
 
                 Debug.Log("Benar!");
                 SortingManager.instance.AddCorrect();
