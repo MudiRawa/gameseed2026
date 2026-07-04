@@ -23,6 +23,8 @@ public class ScannerArea : MonoBehaviour
 
     private DraggableIDCard currentCard;
 
+    public int questIndex;
+
     private void Start()
     {
         scannerRect = GetComponent<RectTransform>();
@@ -106,6 +108,7 @@ public class ScannerArea : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         manager.CompleteMinigame();
+        QuestManager.instance.CompleteQuest(questIndex);
 
         isScanning = false;
     }

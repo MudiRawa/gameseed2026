@@ -22,6 +22,8 @@ public class TypingMinigame : MonoBehaviour
 
     private bool isFlashingRed = false;
 
+    public int questIndex;
+
     private void Start()
     {
         UpdateVisualText();
@@ -134,5 +136,6 @@ public class TypingMinigame : MonoBehaviour
         yield return new WaitForSeconds(1f);
         this.gameObject.SetActive(false);
         SoundManager.Instance.PlaySFX(4);
+        QuestManager.instance.CompleteQuest(questIndex);
     }
 }

@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Gravity")]
     public float gravity = -9.81f;
-    public float jumpHeight = 2f;
 
     private CharacterController controller;
 
@@ -19,9 +18,19 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isGrounded;
 
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+
+    public static PlayerMovement instance;
+
     private void Awake()
     {
+        instance = this;
         controller = GetComponent<CharacterController>();
+
+        // SIMPAN POSISI AWAL
+        startPosition = transform.position;
+        startRotation = transform.rotation;
     }
 
     private void Update()
@@ -29,20 +38,29 @@ public class PlayerMovement : MonoBehaviour
         GroundCheck();
         Move();
         ApplyGravity();
+
+        if (Caught.instance.isCaught)
+        {
+            ResetPlayer();
+        }
+    }
+
+    public void ResetPlayer()
+    {
+        controller.enabled = false;
+
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+
+        controller.enabled = true;
+
+        velocity = Vector3.zero;
     }
 
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
     }
-
-    // public void OnJump(InputValue value)
-    // {
-    //     if (value.isPressed && isGrounded)
-    //     {
-    //         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-    //     }
-    // }
 
     void Move()
     {

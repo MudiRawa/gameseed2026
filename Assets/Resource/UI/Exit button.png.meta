@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1afdf0abf6e4f034f8778bd63235e51f
+guid: 0b6a72c294398b34b95f3b8ec42ebb2c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: paper_anim.002_0
+      name: Exit button_0
       rect:
         serializedVersion: 2
-        x: 48
+        x: 0
         y: 0
-        width: 612
-        height: 494
+        width: 700
+        height: 246
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,8 +125,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6baf9239ce14314baf75630599c6a30
-      internalID: 1797143712
+      spriteID: a62beaf095378c84b9dade4a2e0a9b3b
+      internalID: 1767237238
       vertices: []
       indices: 
       edges: []
@@ -135,8 +135,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2095febb274c11f4cad8a36f32ac88f2
-    internalID: -938373220
+    spriteID: 4504390439804fb4c85046c5f344197f
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -144,12 +144,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries:
-      - key: SpriteEditor.SliceOnImport
-        value: True
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":true,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      paper_anim.002_0: 301063095
+      Exit button_0: 1767237238
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

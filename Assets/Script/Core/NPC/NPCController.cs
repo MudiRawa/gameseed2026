@@ -22,13 +22,29 @@ public class NPCController : MonoBehaviour
     public float waitTime = 2f;
     private bool waiting;
 
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+
+    public static NPCController instance;
+
     void Start()
     {
+        instance = this;
+        // SIMPAN POSISI AWAL
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+
         GoToNextWaypoint();
     }
 
     void Update()
     {
+        if (Caught.instance.isCaught)
+        {
+            ResetNPC();
+            return;
+        }
+
         if (canChase)
         {
             DetectPlayer();
@@ -46,6 +62,20 @@ public class NPCController : MonoBehaviour
         {
             Patrol();
         }
+    }
+
+    public void ResetNPC()
+    {
+        agent.enabled = false;
+
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+
+        agent.enabled = true;
+
+        chasing = false;
+
+        GoToNextWaypoint();
     }
 
     void Patrol()
@@ -70,10 +100,14 @@ public class NPCController : MonoBehaviour
     IEnumerator WaitAndGoToNextWaypoint()
     {
         waiting = true;
-        int arrivedIndex = (currentWaypoint - 1 + waypoints.Length) % waypoints.Length;
+
+        int arrivedIndex =
+            (currentWaypoint - 1 + waypoints.Length) % waypoints.Length;
+
         float thisWait = waitTime;
 
-        if (waypointWaitTimes != null && waypointWaitTimes.Length == waypoints.Length)
+        if (waypointWaitTimes != null &&
+            waypointWaitTimes.Length == waypoints.Length)
         {
             thisWait = waypointWaitTimes[arrivedIndex];
         }

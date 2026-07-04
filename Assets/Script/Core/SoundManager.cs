@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
@@ -14,9 +15,9 @@ public class SoundManager : MonoBehaviour
     [Header("SFX List")]
     public AudioClip[] sfx;
 
-    [Header("Volume")]
-    [Range(0f, 1f)] public float bgmVolume = 1f;
-    [Range(0f, 1f)] public float sfxVolume = 1f;
+    [Header("Volume Slider")]
+    public Slider bgmSlider;
+    public Slider sfxSlider;
 
     private void Awake()
     {
@@ -31,9 +32,30 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
 
-        bgmSource.volume = bgmVolume;
-        sfxSource.volume = sfxVolume;
+    private void Start()
+    {
+        // Load volume sebelumnya
+        float savedBGM = PlayerPrefs.GetFloat("BGMVolume", 1f);
+        float savedSFX = PlayerPrefs.GetFloat("SFXVolume", 1f);
+
+        bgmSource.volume = savedBGM;
+        sfxSource.volume = savedSFX;
+
+        // Set slider value
+        if (bgmSlider != null)
+            bgmSlider.value = savedBGM;
+
+        if (sfxSlider != null)
+            sfxSlider.value = savedSFX;
+
+        // Listener slider
+        if (bgmSlider != null)
+            bgmSlider.onValueChanged.AddListener(SetBGMVolume);
+
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.AddListener(SetSFXVolume);
     }
 
     // =========================
@@ -78,17 +100,17 @@ public class SoundManager : MonoBehaviour
     }
 
     // =========================
-    // CHANGE VOLUME
+    // VOLUME CONTROL
     // =========================
     public void SetBGMVolume(float volume)
     {
-        bgmVolume = volume;
         bgmSource.volume = volume;
+        PlayerPrefs.SetFloat("BGMVolume", volume);
     }
 
     public void SetSFXVolume(float volume)
     {
-        sfxVolume = volume;
         sfxSource.volume = volume;
+        PlayerPrefs.SetFloat("SFXVolume", volume);
     }
 }

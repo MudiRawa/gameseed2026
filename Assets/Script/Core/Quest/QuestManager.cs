@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class QuestManager : MonoBehaviour
 {
@@ -7,50 +8,41 @@ public class QuestManager : MonoBehaviour
     [Header("Quest List")]
     public Quest[] quests;
 
-    private int currentQuestIndex = 0;
+    [Header("Quest UI")]
+    public TextMeshProUGUI[] questTexts;
 
     private void Awake()
     {
         instance = this;
     }
 
-    public Quest GetCurrentQuest()
+    public bool IsQuestCompleted(int questIndex)
     {
-        if (currentQuestIndex >= quests.Length)
-            return null;
+        if (questIndex < 0 || questIndex >= quests.Length)
+            return false;
 
-        return quests[currentQuestIndex];
+        return quests[questIndex].isCompleted;
     }
 
-    public bool IsCurrentQuest(int questIndex)
+    public void CompleteQuest(int questIndex)
     {
-        return currentQuestIndex == questIndex;
-    }
-
-    public void CompleteQuest()
-    {
-        if (currentQuestIndex >= quests.Length)
+        if (questIndex < 0 || questIndex >= quests.Length)
             return;
 
-        quests[currentQuestIndex].isCompleted = true;
+        if (quests[questIndex].isCompleted)
+            return;
+
+        quests[questIndex].isCompleted = true;
+
+        if (questTexts.Length > questIndex)
+        {
+            questTexts[questIndex].text =
+                "<s>" + questTexts[questIndex].text + "</s>";
+        }
 
         Debug.Log(
             "Quest Completed: " +
-            quests[currentQuestIndex].questName
+            quests[questIndex].questName
         );
-
-        currentQuestIndex++;
-
-        if (currentQuestIndex < quests.Length)
-        {
-            Debug.Log(
-                "Next Quest: " +
-                quests[currentQuestIndex].questName
-            );
-        }
-        else
-        {
-            Debug.Log("All quests completed!");
-        }
     }
 }

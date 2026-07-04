@@ -7,6 +7,8 @@ public class SortingManager : MonoBehaviour
 
     private int currentCorrect = 0;
 
+    public int questIndex;
+
     public static SortingManager instance;
 
     private void Awake()
@@ -30,5 +32,6 @@ public class SortingManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         this.gameObject.SetActive(false);
         SoundManager.Instance.PlaySFX(4);
+        QuestManager.instance.CompleteQuest(questIndex);
     }
 }

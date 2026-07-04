@@ -6,6 +6,8 @@ public class PrintMinigame : MonoBehaviour
     public Animator printAnimator;
     public Animator paperAnimator;
 
+    public int questIndex;
+
     public void StartPrinting()
     {
         Debug.Log("Start Printing");
@@ -14,6 +16,7 @@ public class PrintMinigame : MonoBehaviour
     void CompleteMinigame()
     {
         Debug.Log("TASK COMPLETE");
+        QuestManager.instance.CompleteQuest(questIndex);
         this.gameObject.SetActive(false);
         SoundManager.Instance.PlaySFX(4);
     }
