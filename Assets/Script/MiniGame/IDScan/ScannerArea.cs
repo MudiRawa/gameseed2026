@@ -25,6 +25,8 @@ public class ScannerArea : MonoBehaviour
 
     public int questIndex;
 
+    public GameObject pintu;
+
     private void Start()
     {
         scannerRect = GetComponent<RectTransform>();
@@ -106,10 +108,9 @@ public class ScannerArea : MonoBehaviour
         scanSprite.sprite = successSprite;
 
         yield return new WaitForSeconds(1f);
-
+        pintu.SetActive(false);
         manager.CompleteMinigame();
         QuestManager.instance.CompleteQuest(questIndex);
-
         isScanning = false;
     }
 }

@@ -11,6 +11,8 @@ public class QuestManager : MonoBehaviour
     [Header("Quest UI")]
     public TextMeshProUGUI[] questTexts;
 
+    public int QuestComplete;
+
     private void Awake()
     {
         instance = this;
